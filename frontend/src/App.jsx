@@ -3,7 +3,7 @@ function App() {
     return (
       <>
    <h1 className = "title">Snake Game</h1>
-   <div className = "Board"></div>
+   <div className = "board"></div>
    </>
     
     )
