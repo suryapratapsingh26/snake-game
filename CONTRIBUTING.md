@@ -11,9 +11,11 @@ git clone https://github.com/suryapratapsingh26/snake-game.git
 cd snake-game
 ```
 ## frontend
+```bash
 cd frontend
 yarn install
 yarn dev
+```
 # Pull Request Process
 - Nothing must be committed directly to the main branch
 - All changes to main should be through PR
