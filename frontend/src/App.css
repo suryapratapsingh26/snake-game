@@ -1,0 +1,12 @@
+.title {
+  text-align: center;
+}
+.board {
+  width: 800px;
+  height: 600px;
+  background-color: darkolivegreen;
+  margin: 0 auto;
+}
+body {
+  background-color: powderblue;
+}
