@@ -6,6 +6,9 @@
   height: 600px;
   background-color: darkolivegreen;
   margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(20, 40px);
+  grid-template-rows: repeat(15, 40px);
 }
 body {
   background-color: powderblue;
@@ -19,4 +22,10 @@ body {
   background-color: orange;
   margin: 0 auto;
   cursor: pointer;
+}
+.cell {
+  border: 1px solid none;
+}
+.snake {
+  background-color: black;
 }
