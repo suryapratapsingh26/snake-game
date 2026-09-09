@@ -10,3 +10,13 @@
 body {
   background-color: powderblue;
 }
+.button {
+  width: 5%;
+  height: 5%;
+  padding: 8px 16px;
+  display: block;
+  border-radius: 5px;
+  background-color: orange;
+  margin: 0 auto;
+  cursor: pointer;
+}
