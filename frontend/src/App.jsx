@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import "./App.css";
+import { DIRECTIONS, OPPOSITE_DIRECTION, DIRECTION_KEYS } from "./constants";
 
 const BOARD_WIDTH = 20;
 const BOARD_HEIGHT = 15;
@@ -7,20 +8,6 @@ const BOARD_SIZE = BOARD_WIDTH * BOARD_HEIGHT;
 const INITIAL_POSITION = 154;
 const ONE_STEP = 1;
 const MOVE_INTERVAL = 500;
-
-const DIRECTIONS = {
-  UP: "up",
-  RIGHT: "right",
-  DOWN: "down",
-  LEFT: "left",
-};
-
-const OPPOSITE_DIRECTION = {
-  [DIRECTIONS.UP]: DIRECTIONS.DOWN,
-  [DIRECTIONS.RIGHT]: DIRECTIONS.LEFT,
-  [DIRECTIONS.DOWN]: DIRECTIONS.UP,
-  [DIRECTIONS.LEFT]: DIRECTIONS.RIGHT,
-};
 
 const getNextPosition = (position, direction) => {
   if (direction === DIRECTIONS.UP) {
@@ -47,17 +34,9 @@ function App() {
   const handleKeyDown = (event) => {
     if (!gameStarted) return;
 
-    let newDirection;
+    const newDirection = DIRECTION_KEYS[event.key];
 
-    if (event.key === "ArrowUp" || event.key === "w") {
-      newDirection = DIRECTIONS.UP;
-    } else if (event.key === "ArrowDown" || event.key === "s") {
-      newDirection = DIRECTIONS.DOWN;
-    } else if (event.key === "ArrowLeft" || event.key === "a") {
-      newDirection = DIRECTIONS.LEFT;
-    } else if (event.key === "ArrowRight" || event.key === "d") {
-      newDirection = DIRECTIONS.RIGHT;
-    } else {
+    if (!newDirection) {
       return;
     }
 
