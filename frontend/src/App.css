@@ -23,9 +23,6 @@ body {
   margin: 0 auto;
   cursor: pointer;
 }
-.cell {
-  border: 1px solid none;
-}
 .snake {
   background-color: black;
 }
