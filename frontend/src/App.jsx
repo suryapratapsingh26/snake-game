@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import "./App.css";
+import Snake from "./Snake/Snake";
+import Food from "./Food/Food";
 import { DIRECTIONS, OPPOSITE_DIRECTION, DIRECTION_KEYS } from "./constants";
 
 const BOARD_WIDTH = 20;
@@ -44,7 +46,9 @@ function App() {
   const directionRef = useRef(DIRECTIONS.RIGHT);
 
   const handleKeyDown = (event) => {
-    if (!gameStarted) return;
+    if (!gameStarted) {
+      return;
+    }
 
     const newDirection = DIRECTION_KEYS[event.key];
 
@@ -62,11 +66,15 @@ function App() {
   useEffect(() => {
     window.addEventListener("keydown", handleKeyDown);
 
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
   }, [gameStarted]);
 
   useEffect(() => {
-    if (!gameStarted) return;
+    if (!gameStarted) {
+      return;
+    }
 
     const interval = setInterval(() => {
       setSnake((snake) => {
@@ -82,7 +90,9 @@ function App() {
       });
     }, MOVE_INTERVAL);
 
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+    };
   }, [gameStarted, foodPosition]);
 
   return (
@@ -90,18 +100,17 @@ function App() {
       <h1 className="title">Snake Game</h1>
 
       <div className="board">
-        {Array.from({ length: BOARD_SIZE }).map((_, index) => (
-          <div
-            className={
-              snake.includes(index)
-                ? "cell snake"
-                : index === foodPosition
-                  ? "cell food"
-                  : "cell"
-            }
-            key={index}
-          ></div>
-        ))}
+        {Array.from({ length: BOARD_SIZE }).map((_, index) => {
+          const isSnake = snake.includes(index);
+          const isFood = index === foodPosition;
+
+          return (
+            <div className="cell" key={index}>
+              {isSnake && <Snake />}
+              {isFood && <Food />}
+            </div>
+          );
+        })}
       </div>
 
       <button className="button" onClick={() => setGameStarted(true)}>
