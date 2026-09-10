@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import "./App.css";
-import Snake from "./Snake/Snake";
-import Food from "./Food/Food";
+import Board from "./Board/Board";
 import { DIRECTIONS, OPPOSITE_DIRECTION, DIRECTION_KEYS } from "./constants";
 
 const BOARD_WIDTH = 20;
@@ -46,9 +45,7 @@ function App() {
   const directionRef = useRef(DIRECTIONS.RIGHT);
 
   const handleKeyDown = (event) => {
-    if (!gameStarted) {
-      return;
-    }
+    if (!gameStarted) return;
 
     const newDirection = DIRECTION_KEYS[event.key];
 
@@ -72,10 +69,7 @@ function App() {
   }, [gameStarted]);
 
   useEffect(() => {
-    if (!gameStarted) {
-      return;
-    }
-
+    if (!gameStarted) return;
     const interval = setInterval(() => {
       setSnake((snake) => {
         const newHead = getNextPosition(snake[0], directionRef.current);
@@ -99,19 +93,7 @@ function App() {
     <>
       <h1 className="title">Snake Game</h1>
 
-      <div className="board">
-        {Array.from({ length: BOARD_SIZE }).map((_, index) => {
-          const isSnake = snake.includes(index);
-          const isFood = index === foodPosition;
-
-          return (
-            <div className="cell" key={index}>
-              {isSnake && <Snake />}
-              {isFood && <Food />}
-            </div>
-          );
-        })}
-      </div>
+      <Board boardSize={BOARD_SIZE} snake={snake} foodPosition={foodPosition} />
 
       <button className="button" onClick={() => setGameStarted(true)}>
         Play
