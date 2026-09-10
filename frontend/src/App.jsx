@@ -8,6 +8,7 @@ const BOARD_SIZE = BOARD_WIDTH * BOARD_HEIGHT;
 const INITIAL_POSITION = 154;
 const ONE_STEP = 1;
 const MOVE_INTERVAL = 500;
+const INITIAL_FOOD_POSITION = 23;
 
 const getNextPosition = (position, direction) => {
   if (direction === DIRECTIONS.UP) {
@@ -25,9 +26,20 @@ const getNextPosition = (position, direction) => {
   return position + ONE_STEP;
 };
 
+const getNextFoodPosition = (snake) => {
+  let position;
+
+  do {
+    position = Math.floor(Math.random() * BOARD_SIZE);
+  } while (snake.includes(position));
+
+  return position;
+};
+
 function App() {
-  const [snakePosition, setSnakePosition] = useState(INITIAL_POSITION);
+  const [snake, setSnake] = useState([INITIAL_POSITION]);
   const [gameStarted, setGameStarted] = useState(false);
+  const [foodPosition, setFoodPosition] = useState(INITIAL_FOOD_POSITION);
 
   const directionRef = useRef(DIRECTIONS.RIGHT);
 
@@ -57,13 +69,21 @@ function App() {
     if (!gameStarted) return;
 
     const interval = setInterval(() => {
-      setSnakePosition((position) =>
-        getNextPosition(position, directionRef.current),
-      );
+      setSnake((snake) => {
+        const newHead = getNextPosition(snake[0], directionRef.current);
+        const newSnake = [newHead, ...snake];
+
+        if (newHead === foodPosition) {
+          setFoodPosition(getNextFoodPosition(newSnake));
+          return newSnake;
+        }
+
+        return newSnake.slice(0, -1);
+      });
     }, MOVE_INTERVAL);
 
     return () => clearInterval(interval);
-  }, [gameStarted]);
+  }, [gameStarted, foodPosition]);
 
   return (
     <>
@@ -72,7 +92,13 @@ function App() {
       <div className="board">
         {Array.from({ length: BOARD_SIZE }).map((_, index) => (
           <div
-            className={index === snakePosition ? "cell snake" : "cell"}
+            className={
+              snake.includes(index)
+                ? "cell snake"
+                : index === foodPosition
+                  ? "cell food"
+                  : "cell"
+            }
             key={index}
           ></div>
         ))}
