@@ -37,11 +37,15 @@ const getNextFoodPosition = (snake) => {
   return position;
 };
 
+const hasSelfCollision = (newHead, snake) => {
+  return snake.slice(1).includes(newHead);
+};
+
 function App() {
   const [snake, setSnake] = useState([INITIAL_POSITION]);
   const [gameStarted, setGameStarted] = useState(false);
   const [foodPosition, setFoodPosition] = useState(INITIAL_FOOD_POSITION);
-
+  const [gameOver, setGameOver] = useState(false);
   const directionRef = useRef(DIRECTIONS.RIGHT);
 
   const handleKeyDown = (event) => {
@@ -49,9 +53,7 @@ function App() {
 
     const newDirection = DIRECTION_KEYS[event.key];
 
-    if (!newDirection) {
-      return;
-    }
+    if (!newDirection) return;
 
     if (newDirection === OPPOSITE_DIRECTION[directionRef.current]) {
       return;
@@ -70,9 +72,17 @@ function App() {
 
   useEffect(() => {
     if (!gameStarted) return;
+
     const interval = setInterval(() => {
       setSnake((snake) => {
         const newHead = getNextPosition(snake[0], directionRef.current);
+
+        if (hasSelfCollision(newHead, snake)) {
+          setGameStarted(false);
+          setGameOver(true);
+          return snake;
+        }
+
         const newSnake = [newHead, ...snake];
 
         if (newHead === foodPosition) {
@@ -94,6 +104,8 @@ function App() {
       <h1 className="title">Snake Game</h1>
 
       <Board boardSize={BOARD_SIZE} snake={snake} foodPosition={foodPosition} />
+
+      {gameOver && <h2 className="game-over">Game Over</h2>}
 
       <button className="button" onClick={() => setGameStarted(true)}>
         Play
