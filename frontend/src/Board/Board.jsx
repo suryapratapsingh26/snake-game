@@ -8,6 +8,7 @@ function Board({ boardSize, snake, foodPosition }) {
         <Cell
           key={index}
           isSnake={snake.includes(index)}
+          isHead={index === snake[0]}
           isFood={index === foodPosition}
         />
       ))}
