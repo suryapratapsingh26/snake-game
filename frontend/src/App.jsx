@@ -15,18 +15,26 @@ const SCORE_PER_FOOD = 10;
 
 const getNextPosition = (position, direction) => {
   if (direction === DIRECTIONS.UP) {
-    return position - BOARD_WIDTH;
+    return position < BOARD_WIDTH
+      ? position + BOARD_SIZE - BOARD_WIDTH
+      : position - BOARD_WIDTH;
   }
 
   if (direction === DIRECTIONS.DOWN) {
-    return position + BOARD_WIDTH;
+    return position >= BOARD_SIZE - BOARD_WIDTH
+      ? position - BOARD_SIZE + BOARD_WIDTH
+      : position + BOARD_WIDTH;
   }
 
   if (direction === DIRECTIONS.LEFT) {
-    return position - ONE_STEP;
+    return position % BOARD_WIDTH === 0
+      ? position + BOARD_WIDTH - ONE_STEP
+      : position - ONE_STEP;
   }
 
-  return position + ONE_STEP;
+  return position % BOARD_WIDTH === BOARD_WIDTH - 1
+    ? position - BOARD_WIDTH + ONE_STEP
+    : position + ONE_STEP;
 };
 
 const getNextFoodPosition = (snake) => {
