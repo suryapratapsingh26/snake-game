@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import "./App.css";
 import Board from "./Board/Board";
 import { DIRECTIONS, OPPOSITE_DIRECTION, DIRECTION_KEYS } from "./constants";
+import Score from "./Score/score";
 
 const BOARD_WIDTH = 20;
 const BOARD_HEIGHT = 15;
@@ -10,6 +11,7 @@ const INITIAL_POSITION = 154;
 const ONE_STEP = 1;
 const MOVE_INTERVAL = 500;
 const INITIAL_FOOD_POSITION = 23;
+const SCORE_PER_FOOD = 10;
 
 const getNextPosition = (position, direction) => {
   if (direction === DIRECTIONS.UP) {
@@ -46,7 +48,9 @@ function App() {
   const [gameStarted, setGameStarted] = useState(false);
   const [foodPosition, setFoodPosition] = useState(INITIAL_FOOD_POSITION);
   const [gameOver, setGameOver] = useState(false);
+  const previousFoodPositionRef = useRef(foodPosition);
   const directionRef = useRef(DIRECTIONS.RIGHT);
+  const [score, setScore] = useState(0);
 
   const handleKeyDown = (event) => {
     if (!gameStarted) return;
@@ -61,6 +65,12 @@ function App() {
 
     directionRef.current = newDirection;
   };
+  useEffect(() => {
+    if (previousFoodPositionRef.current !== foodPosition) {
+      setScore((score) => score + SCORE_PER_FOOD);
+      previousFoodPositionRef.current = foodPosition;
+    }
+  }, [foodPosition]);
 
   useEffect(() => {
     window.addEventListener("keydown", handleKeyDown);
@@ -102,6 +112,8 @@ function App() {
   return (
     <>
       <h1 className="title">Snake Game</h1>
+
+      <Score score={score} />
 
       <Board boardSize={BOARD_SIZE} snake={snake} foodPosition={foodPosition} />
 
