@@ -19,7 +19,7 @@ import Score from "../Score/score";
 import "./GameLogic.css";
 
 function GameLogic() {
-  const [snake, setSnake] = useState([INITIAL_POSITION]);
+  const [snake, setSnake] = useState([]);
   const [gameStarted, setGameStarted] = useState(false);
   const [foodPosition, setFoodPosition] = useState(INITIAL_FOOD_POSITION);
   const [gameOver, setGameOver] = useState(false);
@@ -39,6 +39,16 @@ function GameLogic() {
     }
 
     directionRef.current = newDirection;
+  };
+  const handlePlay = () => {
+    setSnake([INITIAL_POSITION, INITIAL_POSITION - 1]);
+    setFoodPosition(INITIAL_FOOD_POSITION);
+    setScore(0);
+    setGameOver(false);
+    setGameStarted(true);
+
+    directionRef.current = DIRECTIONS.RIGHT;
+    previousFoodPositionRef.current = INITIAL_FOOD_POSITION;
   };
   useEffect(() => {
     if (previousFoodPositionRef.current !== foodPosition) {
@@ -94,7 +104,7 @@ function GameLogic() {
 
       {gameOver && <h2 className="game-over">Game Over</h2>}
 
-      <button className="button" onClick={() => setGameStarted(true)}>
+      <button className="button" onClick={handlePlay}>
         Play
       </button>
     </>
@@ -102,4 +112,3 @@ function GameLogic() {
 }
 
 export default GameLogic;
-
