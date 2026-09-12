@@ -15,22 +15,36 @@ const SCORE_PER_FOOD = 10;
 
 const getNextPosition = (position, direction) => {
   if (direction === DIRECTIONS.UP) {
+    /*
+  If the snake is already at the top row and the user presses up,
+  the snake comes out from the bottom at the same column.
+  Otherwise, it moves one row upward.*/
     return position < BOARD_WIDTH
       ? position + BOARD_SIZE - BOARD_WIDTH
       : position - BOARD_WIDTH;
   }
 
   if (direction === DIRECTIONS.DOWN) {
+    /* If the snake is already at the bottom row and the user presses down,
+   the snake comes out from the top at the same column.
+   Otherwise, it moves one row downward.*/
+
     return position >= BOARD_SIZE - BOARD_WIDTH
       ? position - BOARD_SIZE + BOARD_WIDTH
       : position + BOARD_WIDTH;
   }
 
   if (direction === DIRECTIONS.LEFT) {
+    /* If the snake is already at the left edge and the user presses left,
+   the snake comes out from the right edge of the same row.
+   Otherwise, it moves one cell to the left.*/
     return position % BOARD_WIDTH === 0
       ? position + BOARD_WIDTH - ONE_STEP
       : position - ONE_STEP;
   }
+  /* If the snake is already at the right edge and the user presses right,
+   he snake comes out from the left edge of the same row.
+   Otherwise, it moves one cell to the right.*/
 
   return position % BOARD_WIDTH === BOARD_WIDTH - 1
     ? position - BOARD_WIDTH + ONE_STEP
