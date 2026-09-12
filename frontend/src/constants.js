@@ -26,3 +26,11 @@ export const DIRECTION_KEYS = {
   d: DIRECTIONS.RIGHT,
   l: DIRECTIONS.RIGHT,
 };
+
+export const BOARD_WIDTH = 20;
+export const BOARD_HEIGHT = 15;
+export const BOARD_SIZE = BOARD_WIDTH * BOARD_HEIGHT;
+export const INITIAL_POSITION = 154;
+export const MOVE_INTERVAL = 500;
+export const INITIAL_FOOD_POSITION = 23;
+export const SCORE_PER_FOOD = 10;
