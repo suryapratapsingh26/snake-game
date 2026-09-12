@@ -14,41 +14,25 @@ const INITIAL_FOOD_POSITION = 23;
 const SCORE_PER_FOOD = 10;
 
 const getNextPosition = (position, direction) => {
+  let row = Math.floor(position / BOARD_WIDTH);
+  let col = position % BOARD_WIDTH;
+
+  let nextRow = row;
+  let nextColumn = col;
+
   if (direction === DIRECTIONS.UP) {
-    /*
-  If the snake is already at the top row and the user presses up,
-  the snake comes out from the bottom at the same column.
-  Otherwise, it moves one row upward.*/
-    return position < BOARD_WIDTH
-      ? position + BOARD_SIZE - BOARD_WIDTH
-      : position - BOARD_WIDTH;
+    nextRow = row == 0 ? BOARD_HEIGHT - 1 : row - 1;
   }
-
   if (direction === DIRECTIONS.DOWN) {
-    /* If the snake is already at the bottom row and the user presses down,
-   the snake comes out from the top at the same column.
-   Otherwise, it moves one row downward.*/
-
-    return position >= BOARD_SIZE - BOARD_WIDTH
-      ? position - BOARD_SIZE + BOARD_WIDTH
-      : position + BOARD_WIDTH;
+    nextRow = row == BOARD_HEIGHT - 1 ? 0 : row + 1;
   }
-
+  if (direction === DIRECTIONS.RIGHT) {
+    nextColumn = col == BOARD_WIDTH - 1 ? 0 : col + 1;
+  }
   if (direction === DIRECTIONS.LEFT) {
-    /* If the snake is already at the left edge and the user presses left,
-   the snake comes out from the right edge of the same row.
-   Otherwise, it moves one cell to the left.*/
-    return position % BOARD_WIDTH === 0
-      ? position + BOARD_WIDTH - ONE_STEP
-      : position - ONE_STEP;
+    nextColumn = col == 0 ? BOARD_WIDTH - 1 : col - 1;
   }
-  /* If the snake is already at the right edge and the user presses right,
-   he snake comes out from the left edge of the same row.
-   Otherwise, it moves one cell to the right.*/
-
-  return position % BOARD_WIDTH === BOARD_WIDTH - 1
-    ? position - BOARD_WIDTH + ONE_STEP
-    : position + ONE_STEP;
+  return nextRow * BOARD_WIDTH + nextColumn;
 };
 
 const getNextFoodPosition = (snake) => {
